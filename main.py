@@ -15,7 +15,12 @@ class Item(BaseModel):
 
 @app.get('/')
 async def main():
-    return {'hello': 'pop'}
+    return {'message': 'Hello world'}
+
+
+@app.get("/message/{some_message}")
+async def get_message(some_message: str):
+    return some_message
 
 
 @app.get("/items/{item_id}")
@@ -26,6 +31,12 @@ async def read_item(item_id: int, q: Union[str, None] = None):
 @app.put("/items/{item_id}")
 async def read_item(item_id: int, item: Item):
     return {"item_id": item_id, "item_name": item.name, "item_price": item.price}
+
+
+@app.post("/post_mes/{post_message}")
+async def post_message(post_message: str):
+    print(post_message)
+    return {"post_message": post_message}
 
 
 if __name__ == '__main__':
