@@ -1,10 +1,17 @@
 from typing import Union
+from enum import Enum
 
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 app = FastAPI()
+
+
+class ModelName(str, Enum):
+    alexnet = "alexnet"
+    resnet = "resnet"
+    lenet = "lenet"
 
 
 class Item(BaseModel):
@@ -24,8 +31,15 @@ async def get_message(some_message: str):
 
 
 @app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+async def read_item(item_id: str, q: str | None = None, short: bool = False):
+    item = {"item_id": item_id}
+    if q:
+        item.update({"q": q})
+    if not short:
+        item.update(
+            {"description": "This is an amazing item that has a long description"}
+        )
+    return item
 
 
 @app.put("/read_item/{item_id}")
@@ -38,9 +52,21 @@ async def post_message(post_message: str):
     print(post_message)
     return {"post_message": post_message}
 
+
 @app.get("/users")
 async def read_users():
     return ["Rick", "Morty"]
+
+
+@app.get("/models/{model_name}")
+async def get_model(model_name: ModelName):
+    if model_name is ModelName.alexnet:
+        return {"model_name": model_name, "message": "Deep Learning FTW!"}
+
+    if model_name.value == "lenet":
+        return {"model_name": model_name, "message": "LeCNN all the images"}
+
+    return {"model_name": model_name, "message": "Have some residuals"}
 
 
 if __name__ == '__main__':
