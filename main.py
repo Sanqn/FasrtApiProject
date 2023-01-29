@@ -47,7 +47,7 @@ async def read_item(item_id: int, item: Item):
     return {"item_id": item_id, "item_name": item.name, "item_price": item.price}
 
 
-@app.post("/post_mes/{post_message}")  # http://127.0.0.1:8000/post_mes/Wow i found you!
+@app.post("/post_mes/{post_message}")  # http://127.0.0.1:8000/post_mes/Wow i found you.
 async def post_message(post_message: str):
     print(post_message)
     return {"post_message": post_message}
