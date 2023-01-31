@@ -22,7 +22,7 @@ class Item(BaseModel):
 
 @app.get('/')
 async def main():
-    return {'message': 'Hello world'}
+    return {'message': 'Hello world!'}
 
 
 @app.get("/message/{some_message}")
